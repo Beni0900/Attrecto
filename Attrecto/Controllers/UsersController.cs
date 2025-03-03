@@ -1,4 +1,5 @@
 ﻿using Attrecto.Data;
+using Attrecto.Respositories;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -10,28 +11,27 @@ namespace Attrecto.Controllers
     public class UsersController : ControllerBase
     {
 
-        public static List<User>? Users = new List<User>();
+        private readonly UserRepository _repo;
+
+        public UsersController()
+        {
+            _repo = new UserRepository();
+        }
 
         // GET: api/<UsersController>
         [HttpGet]
         public IEnumerable<User> Get()
         {
-            return Users;
+            return _repo.GetAll();
         }
 
         // GET api/<UsersController>/5
         [HttpGet("{id}")]
         public ActionResult<User> Get(int id)
         {
-            foreach (var user in Users)
-            {
-                if (user.Id == id)
-                {
-                    return Ok(user);
-                }
-            }
+            var user = _repo.GetById(id);
 
-            return NotFound();
+            return user == null ? NotFound() : user;
         }
 
         // POST api/<UsersController>
@@ -43,7 +43,7 @@ namespace Attrecto.Controllers
                 return BadRequest(ModelState);
             }
 
-            Users.Add(data);
+            _repo.Create(data);
 
             return NoContent();
         }
@@ -52,37 +52,18 @@ namespace Attrecto.Controllers
         [HttpPut("{id}")]
         public ActionResult Put(int id, [FromBody] User data)
         {
-            foreach (var user in Users)
-            {
-                if (user.Id == id)
-                {
-                    user.FirstName = data.FirstName;
-                    user.LastName = data.LastName;
+            var user = _repo.Update(id, data);
 
-                    return NoContent();
-                }
-            }
-
-            return NotFound();
+            return user == null ? NotFound() : NoContent();
         }
-
-
 
         // DELETE api/<UsersController>/5
         [HttpDelete("{id}")]
         public ActionResult Delete(int id)
         {
-            foreach (var user in Users)
-            {
-                if (user.Id == id)
-                {
-                    Users.Remove(user);
+            var result = _repo.Delete(id);
 
-                    return NoContent();
-                }
-            }
-
-            return NotFound();
+            return result ? NoContent() : NotFound();
         }
     }
 }

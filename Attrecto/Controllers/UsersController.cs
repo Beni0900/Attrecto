@@ -65,5 +65,12 @@ namespace Attrecto.Controllers
 
             return result ? NoContent() : NotFound();
         }
+
+        // Adult users api/<UsersController>
+        [HttpGet("adults")]
+        public IEnumerable<User> AdultUsers()
+        {
+            return _repo.GetAdultUsers();
+        }
     }
 }

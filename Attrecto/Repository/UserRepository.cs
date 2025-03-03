@@ -55,5 +55,10 @@ namespace Attrecto.Respositories
 
             return false;
         }
+
+        public List<User> GetAdultUsers()
+        {
+            return _context.Users.Where(user => user.Age >= 18).ToList();
+        }
     }
 }

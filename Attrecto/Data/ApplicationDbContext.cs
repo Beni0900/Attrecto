@@ -16,5 +16,6 @@ namespace Attrecto.Data
             => optionsBuilder.UseSqlite($"Data Source={DbPath}");
 
         public DbSet<User> Users { get; set; }
+        public DbSet<Course> Courses { get; set; }
     }
 }

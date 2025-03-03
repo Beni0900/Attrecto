@@ -1,4 +1,5 @@
 ﻿using Attrecto.Data;
+using Attrecto.Repository;
 using Microsoft.AspNetCore.Mvc;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
@@ -10,28 +11,27 @@ namespace Attrecto.Controllers
     [ApiController]
     public class CourseController : ControllerBase
     {
-        public static List<Course> Courses = new List<Course>();
+        private readonly CourseRepository _repo;
+
+        public CourseController()
+        {
+            _repo = new CourseRepository();
+        }
 
         // GET: api/<ValuesController>
         [HttpGet]
         public IEnumerable<Course> Get()
         {
-            return Courses;
+            return _repo.GetAll();
         }
 
         // GET api/<ValuesController>/5
         [HttpGet("{id}")]
         public ActionResult<Course> Get(int id)
         {
-            foreach (var course in Courses)
-            {
-                if (course.Id == id)
-                {
-                    return Ok(course);
-                }
-            }
+            var course = _repo.GetById(id);
 
-            return BadRequest();
+            return course == null ? NotFound() : course;
         }
 
         // POST api/<ValuesController>
@@ -43,7 +43,7 @@ namespace Attrecto.Controllers
                 return BadRequest(ModelState);
             }
 
-            Courses.Add(data);
+            _repo.Create(data);
 
             return NoContent();
         }
@@ -52,18 +52,9 @@ namespace Attrecto.Controllers
         [HttpPut("{id}")]
         public ActionResult Put(int id, [FromBody] Course data)
         {
-            foreach (var course in Courses)
-            {
-                if (course.Id == id)
-                {
-                    course.Name = data.Name;
-                    course.Description = data.Description;
+            var result = _repo.Update(id, data);
 
-                    return NoContent();
-                }
-            }
-
-            return NotFound();
+            return result == null ? NotFound(): NoContent();
         }
 
 
@@ -71,17 +62,9 @@ namespace Attrecto.Controllers
         [HttpDelete("{id}")]
         public ActionResult Delete(int id)
         {
-            foreach (var course in Courses)
-            {
-                if (course.Id == id)
-                {
-                    Courses.Remove(course);
+            var result = _repo.Delete(id);
 
-                    return NoContent();
-                }
-            }
-
-            return NotFound();
+            return result ? NoContent() : NotFound();
         }
     }
 }

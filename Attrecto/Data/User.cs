@@ -14,5 +14,13 @@ namespace Attrecto.Data
         [Required]
         [StringLength(50)]
         public string? LastName { get; set; }
+
+        [Required]
+        public string? Email { get; set; }
+        [Required]
+        public int? Age { get; set; }
+        [Required]
+        public string? Password { get; set; }
+
     }
 }

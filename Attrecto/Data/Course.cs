@@ -15,5 +15,7 @@ namespace Attrecto.Data
 
         [Required]
         public string Url { get; set; }
+
+        public ICollection<User> Users { get; set; } = [];
     }
 }

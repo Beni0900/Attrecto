@@ -1,3 +1,9 @@
+using Attrecto.Data;
+using Attrecto.Repository;
+using Attrecto.Respositories;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -6,6 +12,10 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<ICourseRepository, CourseRepository>();
+builder.Services.AddDbContext<ApplicationDbContext>(opts => opts.UseSqlite(builder.Configuration.GetConnectionString("ApplicationDbContext")));
 
 var app = builder.Build();
 

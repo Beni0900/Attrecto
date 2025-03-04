@@ -22,5 +22,7 @@ namespace Attrecto.Data
         [Required]
         public string? Password { get; set; }
 
+        public ICollection<Course> Courses { get; set; } = [];
+
     }
 }

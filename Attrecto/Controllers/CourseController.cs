@@ -11,11 +11,11 @@ namespace Attrecto.Controllers
     [ApiController]
     public class CourseController : ControllerBase
     {
-        private readonly CourseRepository _repo;
+        private readonly ICourseRepository _repo;
 
-        public CourseController()
+        public CourseController(ICourseRepository repo)
         {
-            _repo = new CourseRepository();
+            _repo = repo;
         }
 
         // GET: api/<ValuesController>

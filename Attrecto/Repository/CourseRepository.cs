@@ -2,13 +2,13 @@
 
 namespace Attrecto.Repository
 {
-    public class CourseRepository
+    public class CourseRepository : ICourseRepository
     {
         private readonly ApplicationDbContext _context;
 
-        public CourseRepository()
+        public CourseRepository(ApplicationDbContext context)
         {
-            _context = new ApplicationDbContext();
+            _context = context;
         }
 
         public List<Course> GetAll()
@@ -18,7 +18,7 @@ namespace Attrecto.Repository
 
         public Course? GetById(int id)
         {
-            return _context.Courses.FirstOrDefault(course=> course.Id == id);
+            return _context.Courses.FirstOrDefault(course => course.Id == id);
         }
 
         public void Create(Course data)

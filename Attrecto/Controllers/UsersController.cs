@@ -11,57 +11,57 @@ namespace Attrecto.Controllers
     public class UsersController : ControllerBase
     {
 
-        private readonly UserRepository _repo;
+        private readonly IUserRepository _repo;
 
-        public UsersController()
+        public UsersController(IUserRepository repo)
         {
-            _repo = new UserRepository();
+            _repo = repo;
         }
 
         // GET: api/<UsersController>
         [HttpGet]
-        public IEnumerable<User> Get()
+        public async Task<IEnumerable<User>> Get()
         {
-            return _repo.GetAll();
+            return await _repo.GetAllAsync();
         }
 
         // GET api/<UsersController>/5
         [HttpGet("{id}")]
-        public ActionResult<User> Get(int id)
+        public async Task<ActionResult<User>> Get(int id)
         {
-            var user = _repo.GetById(id);
+            var user = await _repo.GetByIdAsync(id);
 
             return user == null ? NotFound() : user;
         }
 
         // POST api/<UsersController>
         [HttpPost]
-        public ActionResult Post([FromBody] User data)
+        public async Task<ActionResult> Post([FromBody] User data)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            _repo.Create(data);
+            await _repo.CreateAsync(data);
 
             return NoContent();
         }
 
         // PUT api/<UsersController>/5
         [HttpPut("{id}")]
-        public ActionResult Put(int id, [FromBody] User data)
+        public async Task<ActionResult> Put(int id, [FromBody] User data)
         {
-            var user = _repo.Update(id, data);
+            var user = await _repo.UpdateAsync(id, data);
 
             return user == null ? NotFound() : NoContent();
         }
 
         // DELETE api/<UsersController>/5
         [HttpDelete("{id}")]
-        public ActionResult Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
-            var result = _repo.Delete(id);
+            var result = await _repo.DeleteAsync(id);
 
             return result ? NoContent() : NotFound();
         }
@@ -70,7 +70,7 @@ namespace Attrecto.Controllers
         [HttpGet("adults")]
         public IEnumerable<User> AdultUsers()
         {
-            return _repo.GetAdultUsers();
+            return _repo.GetAdultUsersAsync();
         }
     }
 }

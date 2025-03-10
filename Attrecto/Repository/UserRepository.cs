@@ -33,8 +33,7 @@ namespace Attrecto.Respositories
             var user = await _context.Users.FirstOrDefaultAsync(user => user.Id == id);
             if (user != null)
             {
-                user.FirstName = data.FirstName;
-                user.LastName = data.LastName;
+                user.Name = data.Name;
                 await _context.SaveChangesAsync();
 
                 return user;

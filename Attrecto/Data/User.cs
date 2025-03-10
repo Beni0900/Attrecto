@@ -9,11 +9,7 @@ namespace Attrecto.Data
 
         [Required]
         [StringLength(50)]
-        public string? FirstName { get; set; }
-
-        [Required]
-        [StringLength(50)]
-        public string? LastName { get; set; }
+        public string? Name { get; set; }
 
         [Required]
         public string? Email { get; set; }
@@ -21,6 +17,8 @@ namespace Attrecto.Data
         public int? Age { get; set; }
         [Required]
         public string? Password { get; set; }
+        [Required]
+        public string? Role { get; set; }
 
         public ICollection<Course> Courses { get; set; } = [];
 
